@@ -1,0 +1,107 @@
+<CalorieCounterScreenView>:
+    MDBoxLayout:
+        orientation: 'vertical'
+        spacing: dp(10)
+        padding: dp(0), dp(10)
+        size_hint_x: 0.95
+        pos_hint: {'center_x': 0.5}
+
+        # calorie goal and mode type
+        MDCard:
+            orientation: 'vertical'
+            radius: dp(10)
+            spacing: dp(10)
+            padding: dp(20)
+            height: self.minimum_height
+            size_hint_y: None
+            md_bg_color: app.theme_cls.primary_color
+
+            MDBoxLayout:
+                spacing: dp(5)
+                adaptive_height: True
+
+                MDLabel:
+                    _cg_color: "#F3AAA0" if root.calorie_goal < 0 else "#FFFFFF"
+                    markup: True
+                    text: f"[color={self._cg_color}]{root.calorie_goal}[/color]"
+                    font_name: "Poppins-SemiBold"
+                    font_size: sp(55)
+                    halign: "right"
+                    height: dp(55)
+                    size_hint: 0.7, None
+
+                MDLabel:
+                    text: "kcal"
+                    font_name: "Poppins-SemiBold"
+                    font_size: sp(32)
+                    halign: "left"
+                    size_hint_x: 0.3
+
+            MDLabel:
+                text: f"WEIGHT {root.user_mode}"
+                font_name: "Poppins-Regular"
+                font_size: sp(16)
+                halign: "center"
+                height: self.texture_size[1]
+                size_hint_y: None
+
+        MDLabel:
+            text: "INTAKE HISTORY"
+            font_name: "Poppins-SemiBold"
+            font_size: sp(16)
+            halign: "center"
+            height: self.texture_size[1]
+            size_hint_y: None
+
+        # intake history table
+        MDCard:
+            orientation: 'vertical'
+            radius: dp(10)
+            padding: dp(15)
+            md_bg_color: app.theme_cls.primary_color
+
+            MDBoxLayout:
+                adaptive_height: True
+
+                MDLabel:
+                    markup: True
+                    text: "[color=#21005D]Item[/color]"
+                    font_name: "Poppins-Bold"
+                    font_size: sp(18)
+                    halign: "center"
+                    height: self.texture_size[1]
+                    size_hint_y: None
+
+                MDLabel:
+                    markup: True
+                    text: "[color=#21005D]Calories[/color]"
+                    font_name: "Poppins-Bold"
+                    font_size: sp(18)
+                    halign: "center"
+                    height: self.texture_size[1]
+                    size_hint_y: None
+
+            MDScrollView:
+                MDList:
+                    id: intake_history
+                    padding: dp(0)
+
+        # buttons
+        MDBoxLayout:
+            id: button_box
+            spacing: dp(25)
+            size_hint_x: 0.6
+            adaptive_height: True
+            pos_hint: {'center_x': 0.5}
+
+            MDFillRoundFlatButton:
+                text: "Add"
+                font_name: "Poppins-SemiBold"
+                size_hint_x: 1
+                on_release: root.add_intake_dialog.open()
+
+            MDFillRoundFlatButton:
+                text: "History"
+                font_name: "Poppins-SemiBold"
+                size_hint_x: 1
+                on_release: root.controller.change_screen("up", "history screen")

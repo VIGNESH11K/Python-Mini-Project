@@ -1,0 +1,155 @@
+#:import GeneralInformationCard View.HomeScreen.ProfileScreen.components
+#:import MatplotFigure kivy_matplotlib_widget.uix.graph_widget
+
+<ProfileScreenView>:
+    # main layout that holds all widgets
+    MDScrollView:
+        id: scroll_view
+        bar_width: dp(0)
+        size_hint_x: 0.95
+        pos_hint: {'center_x': 0.5}
+
+        # scrollable content
+        MDList:
+            padding: dp(0), dp(5)
+            spacing: dp(10)
+
+            MDFloatLayout:
+                size_hint_y: None
+                height: dp(0)
+
+                MDIconButton:
+                    icon: "logout"
+                    pos_hint: {'right': 1,'top': 1}
+                    on_release: root.finalization_dialog.open()
+
+            # the upper part for image and username
+            MDBoxLayout:
+                orientation: "vertical"
+                spacing: dp(10)
+                adaptive_height: True
+
+                FitImage:
+                    source: "assets/images/PROFILE-ICON.png"
+                    size: dp(120), dp(120)
+                    size_hint: None, None
+                    pos_hint: {"center_x": 0.5}
+
+                ProfileLabel:
+                    text:
+                        (
+                        general_info.profile_layout.name_info
+                        if general_info.profile_layout.name_info
+                        else "--"
+                        )
+                    font_name: "Poppins-Bold"
+                    halign: 'center'
+
+            # buttons
+            MDBoxLayout:
+                orientation: 'vertical'
+                spacing: dp(10)
+                adaptive_height: True
+
+                ChangeButton:
+                    text: f"CHANGE MODE: [color=#F3AAA0]{root.current_mode}[/color]"
+                    on_release: root.controller.change_screen("left", "mode screen")
+
+                ChangeButton:
+                    text: f"CHANGE ACTIVITY: [color=#F3AAA0]{root.current_activity}[/color]"
+                    on_release: root.activity_dialog.open()
+
+            # general information of the user
+            GeneralInformationCard:
+                id: general_info
+                controller: root.controller
+
+            MDCard:
+                orientation: 'vertical'
+                radius: dp(10)
+                spacing: dp(10)
+                padding: dp(20), dp(15)
+                height: dp(450)
+                size_hint_y: None
+                md_bg_color: app.theme_cls.primary_color
+
+                ProfileLabel:
+                    text: "Calorie Goal Progress"
+                    font_name: "Poppins-Bold"
+
+                MDBoxLayout:
+                    orientation: "vertical"
+
+                    MatplotFigure:
+                        id: graph1
+                        touch_mode: "pan_x"
+                        do_zoom_x: False
+                        do_zoom_y: False
+
+                    MDFlatButton:
+                        text: root.current_graph1_date
+                        font_name: "Poppins-Regular"
+                        font_size: dp(18)
+                        size_hint_x: 1
+                        on_release: root.graph1_date_dialog.open()
+
+            MDCard:
+                orientation: 'vertical'
+                radius: dp(10)
+                spacing: dp(10)
+                padding: dp(20), dp(15)
+                height: dp(400)
+                size_hint_y: None
+                md_bg_color: app.theme_cls.primary_color
+
+                ProfileLabel:
+                    text: "Food Intake Breakdown"
+                    font_name: "Poppins-Bold"
+
+                MDBoxLayout:
+                    orientation: "vertical"
+
+                    MatplotFigure:
+                        id: graph2
+                        touch_mode: "pan"
+                        do_zoom_x: True
+                        do_zoom_y: True
+
+                    MDFlatButton:
+                        text: root.current_graph2_date
+                        font_name: "Poppins-Regular"
+                        font_size: dp(18)
+                        size_hint_x: 1
+                        on_release: root.graph2_date_dialog.open()
+
+
+# dynamic class
+<ChangeButton@MDRectangleFlatButton>:
+    font_name: "Poppins-SemiBold"
+    text_color: "white"
+    size_hint_x: 0.7
+    pos_hint: {'center_x': 0.5}
+    md_bg_color: app.theme_cls.primary_dark
+    line_color: app.theme_cls.primary_dark
+
+
+<WarningSnackbar>:
+    spacing: dp(0)
+    elevation: dp(0)
+    radius: [dp(10), dp(10), dp(10), dp(10)]
+
+    MDIconButton:
+        icon: root.icon
+        theme_text_color: "Custom"
+        icon_color: [1, 0.2, 0.2, 1]
+        pos_hint: {'center_y': 0.5}
+
+    MDLabel:
+        id: text_bar
+        text: root.text
+        font_size: sp(15)
+        theme_text_color: 'Custom'
+        text_color: [1, 0.2, 0.2, 1]
+        height: self.texture_size[1]
+        size_hint_y: None
+        pos_hint: {'center_y': 0.5}

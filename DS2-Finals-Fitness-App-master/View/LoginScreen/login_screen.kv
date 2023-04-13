@@ -1,0 +1,79 @@
+<LoginScreenView>:
+    MDFloatLayout:
+        size_hint: 1, 0.4
+        pos_hint: {"center_x": 0.5, "center_y": 0.82}
+
+        Image:
+            source: "assets/images/CALORAIDE.png"
+            size_hint: 0.9, 0.9
+            pos_hint: {"center_x": 0.5, "center_y": 0.6}
+
+    MDFloatLayout:
+        size_hint: 1, 1.055
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+        MDLabel:
+            text: "LOG-IN"
+            halign: "center"
+            font_name: "Poppins-Medium"
+            font_size: sp(40)
+            pos_hint: {"center_x": 0.5, "center_y": 0.68}
+
+    MDBoxLayout:
+        orientation: 'vertical'
+        spacing: dp(30)
+        adaptive_height: True
+        size_hint_x: 0.65
+        pos_hint: {"center_x": 0.5, "center_y": 0.52}
+
+        MDTextField:
+            id: textfield_username
+            mode: "rectangle"
+            font_name: "Poppins-Medium"
+            hint_text: "Username"
+            line_color_normal: "red" if self.error else "white"
+            helper_text: "This is a required text field"
+            on_focus: self.required = not self.text
+
+        MDRelativeLayout:
+            adaptive_height: True
+
+            MDTextField:
+                id: textfield_password
+                mode: "rectangle"
+                password: True
+                font_name: "Poppins-Medium"
+                line_color_normal: "red" if self.error else "white"
+                hint_text: "Password"
+                helper_text: "This is a required text field"
+                pos_hint: {"center_y": 0.5}
+                on_focus: self.required = not self.text
+
+            MDIconButton:
+                icon: "eye-off"
+                theme_text_color: "Hint"
+                pos: textfield_password.width - self.width + dp(0), 0
+                pos_hint: {"center_y": 0.5}
+                on_release:
+                    self.icon = "eye" if self.icon == "eye-off" else "eye-off"
+                    textfield_password.password = not textfield_password.password
+
+    MDBoxLayout:
+        spacing: dp(25)
+        size_hint_x: 0.6
+        adaptive_height: True
+        pos_hint: {"center_x": 0.5, "center_y": 0.32}
+
+        MDFillRoundFlatButton:
+            text: "LOG-IN"
+            font_name: "Poppins-SemiBold"
+            custom_color: self.theme_text_color
+            size_hint_x: 1
+            on_release: root.validate_user_input()
+
+        MDFillRoundFlatButton:
+            text: "SIGN-UP"
+            font_name: "Poppins-SemiBold"
+            custom_color: self.theme_text_color
+            size_hint_x: 1
+            on_release: root.change_screen("left", "signup screen")
